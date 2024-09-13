@@ -1,0 +1,6 @@
+*.o
+*.d
+rectangular
+waiting-list
+inventory
+inventory-fixed

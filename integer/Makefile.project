@@ -1,0 +1,32 @@
+CXX=		g++ $(CCFLAGS)
+RECT=		rectangular.o
+WAITING=	waiting-list.o
+OBJS =		$(RECT WAITING)
+
+LIBS=		
+
+CCFLAGS= -g
+
+all:		rect waiting
+
+rect:	$(RECT)
+		$(CXX) -o rectangular $(RECT) $(LIBS)
+
+waiting:	$(WAITING)
+			$(CXX) -o waiting-list $(WAITING) $(LIBS)
+
+
+clean:
+		rm -f $(OBJS) $(OBJS:.o=.d)
+
+realclean:
+		rm -f $(OBJS) $(OBJS:.o=.d) rectangular waiting-list
+
+
+# These lines ensure that dependencies are handled automatically.
+%.d:	%.cc
+	$(SHELL) -ec '$(CC) -M $(CPPFLAGS) $< \
+		| sed '\''s/\($*\)\.o[ :]*/\1.o $@ : /g'\'' > $@; \
+		[ -s $@ ] || rm -f $@'
+
+include	$(OBJS:.o=.d)

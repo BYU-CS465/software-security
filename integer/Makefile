@@ -1,0 +1,4 @@
+PROJECT_NAME=integers
+DOCKER_DEPS_FILE=Dockerfile
+
+include Makefile.build
