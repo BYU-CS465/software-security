@@ -1,4 +1,0 @@
-PROJECT_NAME=toctou
-DOCKER_DEPS_FILE=Dockerfile
-
-include Makefile.build

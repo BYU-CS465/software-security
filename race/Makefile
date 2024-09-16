@@ -1,6 +1,5 @@
-PROJECT_NAME=integers
+PROJECT_NAME=race
 DOCKER_DEPS_FILE=Dockerfile
 DOCKER_APPEND_MAKEFILES=Makefile.project
-
 
 include Makefile.build

@@ -1,7 +1,7 @@
 CXX=		g++ $(CCFLAGS)
 RECT=		rectangular.o
 WAITING=	waiting-list.o
-OBJS =		$(RECT WAITING)
+OBJS =		$(RECT) $(WAITING)
 
 LIBS=		
 
