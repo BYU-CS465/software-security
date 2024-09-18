@@ -1,0 +1,5 @@
+PROJECT_NAME=buffer
+DOCKER_DEPS_FILE=Dockerfile
+DOCKER_APPEND_MAKEFILES=Makefile.project
+
+include Makefile.build

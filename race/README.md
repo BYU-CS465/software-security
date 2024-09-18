@@ -15,6 +15,10 @@ You must have Docker Desktop installed
 While logged in to the Docker container, you can also use gdb to inspect the
 code.
 
+## Threads Example
+
+The code in `threads-example` shows how threads work.
+
 ## Inventory
 
 This code simulates a store with a single product and a stream of customers that
@@ -50,3 +54,5 @@ Run:
 
 to run a fixed version of the program. This version uses a mutex to ensure that
 the TOCTOU vulnerability no longer exists.
+
+The code in `inventory-monitor` shows a monitor-like way of organizing mutexes.
