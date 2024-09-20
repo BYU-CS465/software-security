@@ -1,0 +1,76 @@
+PROJECT_NAME?=project
+
+DOCKER_CC?=clang
+DOCKER_CXX?=clang++
+
+DOCKER_DEPS_REPO?=${PROJECT_NAME}/
+DOCKER_DEPS_IMAGE?=${PROJECT_NAME}_build
+DOCKER_DEPS_VERSION?=latest
+DOCKER_DEPS_CONTAINER?=${DOCKER_DEPS_IMAGE}
+DOCKER_DEPS_FILE?=DockerfileBuildEnv
+
+DOCKER_DEPS_IMAGE_BUILD_FLAGS?=--no-cache=true
+
+DOCKER_PREPEND_MAKEFILES?=
+DOCKER_APPEND_MAKEFILES?=
+
+
+DOCKER_SHELL?=bash
+LOCAL_SOURCE_PATH?=${CURDIR}
+DOCKER_SOURCE_PATH?=/${PROJECT_NAME}
+
+
+DOCKER_ADDITIONAL_RUN_PARAMS?=
+
+DOCKER_USER_ROOT=ON
+
+ifeq ($(DOCKER_USER_ROOT),OFF)
+	DOCKER_USER?=--user $(shell id -u):$(shell id -g)
+else
+endif
+
+DOCKER_BASIC_RUN_PARAMS?=-it --init --rm \
+					  ${DOCKER_USER} \
+					  --memory-swap=-1 \
+					  --ulimit core=-1 \
+					  --name="${DOCKER_DEPS_CONTAINER}" \
+					  --workdir=${DOCKER_SOURCE_PATH} \
+					  --cap-add=SYS_PTRACE --security-opt seccomp=unconfined \
+					  --privileged \
+					  --mount type=bind,source=${LOCAL_SOURCE_PATH},target=${DOCKER_SOURCE_PATH} \
+					  ${DOCKER_ADDITIONAL_RUN_PARAMS} \
+					  ${DOCKER_DEPS_REPO}${DOCKER_DEPS_IMAGE}:${DOCKER_DEPS_VERSION}
+
+IF_CONTAINER_RUNS=$(shell docker container inspect -f '{{.State.Running}}' ${DOCKER_DEPS_CONTAINER} 2>/dev/null)
+
+.DEFAULT_GOAL:=build
+
+-include ${DOCKER_PREPEND_MAKEFILES}
+
+.PHONY: help
+help: ##
+	@cat $(MAKEFILE_LIST) | grep -E '^[a-zA-Z_-]+:.*?## .*$$' | \
+		awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
+
+
+.PHONY: build
+build: ## Build source. In order to build a specific target run: make TARGET=<target name>.
+	make -f Makefile.project ${TARGET}
+
+.PHONY: login
+login: ## Login to the container. Note: if the container is already running, login into existing one
+	@if [ "${IF_CONTAINER_RUNS}" != "true" ]; then \
+		docker run ${DOCKER_BASIC_RUN_PARAMS} \
+			${DOCKER_SHELL}; \
+	else \
+		docker exec -it ${DOCKER_DEPS_CONTAINER} \
+			${DOCKER_SHELL}; \
+	fi
+
+.PHONY: docker
+docker: ## Build the deps image.
+	docker build ${DOCKER_DEPS_IMAGE_BUILD_FLAGS} -t ${DOCKER_DEPS_REPO}${DOCKER_DEPS_IMAGE}:latest \
+		-f ./${DOCKER_DEPS_FILE} .
+
+
+-include ${DOCKER_APPEND_MAKEFILES}
