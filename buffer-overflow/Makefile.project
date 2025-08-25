@@ -5,7 +5,7 @@ OBJS =		$(STACK)
 
 LIBS=		-fno-stack-protector -no-pie
 
-CCFLAGS= -g -m32
+CCFLAGS= -g 
 
 
  
