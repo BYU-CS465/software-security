@@ -98,7 +98,7 @@ doit(void *vptr)
     // We use sleep to represent the waiting.
     int amount = p->inventory;
     cout << pthread_self() << " would like buy " << p->name << " and there are " << amount << " left" << endl;
-    r = random() % 100;
+    r = random() % 10000;
     usleep(r);
     // obtain the lock
     if (check_and_decrement(p))
