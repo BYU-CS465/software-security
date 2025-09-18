@@ -1,5 +1,20 @@
-PROJECT_NAME=buffer
-DOCKER_DEPS_FILE=Dockerfile
-DOCKER_APPEND_MAKEFILES=Makefile.project
+CPP=		g++ $(CCFLAGS)
+STACK=		stack-overflow.cc
 
-include Makefile.build
+OBJS =		$(STACK)
+
+LIBS=		-fno-stack-protector -no-pie
+
+CCFLAGS= -g 
+
+
+ 
+all: stack
+
+stack:	$(STACK)
+		$(CXX) $(CCFLAGS) -fno-stack-protector -no-pie $^ -o $@
+
+clean:
+		rm -f *.o
+
+
