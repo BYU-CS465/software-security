@@ -14,7 +14,7 @@ int retval = 1;
 struct product
 {
     string name;           // name of item
-    int16_t inventory;     // amount on hand
+    int8_t inventory;     // amount on hand
     pthread_mutex_t mutex; // a mutex to provide atomic operations
 };
 
@@ -40,9 +40,13 @@ void create_customers(int number)
 {
     // inventory of the product in shared memory
     struct product p;
+    pthread_attr_t  attrs;
+    
     p.name = string("Intro to Computer Security");
-    p.inventory = 1000;
-    pthread_mutex_init(&p.mutex, NULL);
+    p.inventory = 100;
+
+    // initialize pthreads
+    pthread_attr_init(&attrs);
 
     // initialize random number generator
     srandom(1000);
@@ -52,7 +56,12 @@ void create_customers(int number)
     for (int i = 0; i < number; i++)
     {
         pthread_t thread;
-        pthread_create(&thread, NULL, &doit, &p);
+        int ret = pthread_create(&thread, NULL, &doit, &p);
+	if (ret != 0) {
+	    cout << "Creating thread number " << i << endl;
+	    perror("Error creating thread:");
+	    exit(-1);
+	}
         threads.push_back(move(thread));
     }
 
@@ -60,7 +69,6 @@ void create_customers(int number)
     {
         pthread_join(threads[i], NULL);
     }
-
     cout << "Done" << endl;
 }
 
@@ -75,13 +83,18 @@ doit(void *vptr)
     // Each thread represents a customer.
     // The customer either is able to buy the book or goes on the waiting list
 
-    pthread_mutex_lock(&p->mutex);
+    int ret = pthread_mutex_lock(&p->mutex);
+    if (ret != 0) {
+	perror("locking mutex:");
+	exit(-1);
+    }
+
     // always subtract one from the inventory
     p->inventory -= 1;
     // check if there is still sufficient inventory left
     if (p->inventory >= 0)
     {
-        cout << pthread_self() << " purchased " << p->name << " and there are " << p->inventory << " left" << endl;
+      cout << pthread_self() << " purchased " << p->name << " and there are " << (int) p->inventory << " left" << endl;
     }
     else
     {

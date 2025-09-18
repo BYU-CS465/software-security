@@ -2,18 +2,9 @@
 
 This code demonstrates a TOCTOU (time of check, time of use) vulnerability.
 
-## Requirements
-
-You must have Docker Desktop installed
-
 ## Compile
 
-- `make docker` -- to build the docker container
-- `make login` -- to login to the docker container
-- `make` -- to build the code AFTER logging into the docker container
-
-While logged in to the Docker container, you can also use gdb to inspect the
-code.
+- `make` -- to build the code
 
 ## Threads Example
 

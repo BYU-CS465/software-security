@@ -2,18 +2,9 @@
 
 This code demonstrates integer vulnerabilities.
 
-## Requirements
-
-You must have Docker Desktop installed
-
 ## Compile
 
-- `make docker` -- to build the docker container
-- `make login` -- to login to the docker container
-- `make` -- to build the code AFTER logging into the docker container
-
-While logged in to the Docker container, you can also use gdb to inspect the
-code.
+- `make` -- to build the code
 
 ## Rectangular
 
@@ -43,7 +34,7 @@ unallocated memory.
 
 ## Waiting List
 
-This code simulates customers buying a book. Initially, the store has 1000
+This code simulates customers buying a book. Initially, the store has 100
 copies of the book available. Each customer checks the number of available
 copies and then decrements this by 1. If the resulting inventory is >= 0, then
 the customer is able to buy a book. If the inventory is negative, this
@@ -52,16 +43,18 @@ represents that customer's spot on the waiting list for the book.
 Run:
 
 ```
-./waiting-list 2000
+./waiting-list 2
+./waiting-list 100
+./waiting-list 200
 ```
 
-You should see 1000 customers join the waiting list.
+You should see 100 customers join the waiting list in the last case.
 
 Run:
 
 ```
-./waiting-list 34000
+./waiting-list 300
 ```
 
-You should see the waiting list grow to 2^15 = 32,768 and then wrap around. This
+You should see the waiting list grow to 2^7 = 128 and then wrap around. This
 is an integer underflow bug.
