@@ -1,5 +1,24 @@
-PROJECT_NAME=heap
-DOCKER_DEPS_FILE=Dockerfile
-DOCKER_APPEND_MAKEFILES=Makefile.project
+CPP=		g++ $(CCFLAGS)
+HEAP=		heap-overflow.cc
+HEAP2=		heap-overflow2.cc
 
-include Makefile.build
+OBJS =		$(HEAP) $(HEAP2)
+
+LIBS=		-fno-stack-protector -no-pie
+
+CCFLAGS= -g
+
+
+ 
+all: heap heap2
+
+heap:	$(HEAP)
+		$(CXX) $(CCFLAGS) -fno-stack-protector -no-pie $^ -o $@
+
+heap2:	$(HEAP2)
+		$(CXX) $(CCFLAGS) -fno-stack-protector -no-pie $^ -o $@
+
+clean:
+		rm -f *.o
+
+
