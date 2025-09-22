@@ -1,1 +1,0 @@
-changed -m32 flag from the makefile.project

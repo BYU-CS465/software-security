@@ -11,7 +11,7 @@ The first program, `heap-overflow.cc` stores an integer "role" for the user,
 which is set to 1 (the default) for an ordinary user and 0 for an admin. By
 overflowing a buffer, you can change the role of a user to admin.
 
-## Changing a funciton pointer
+## Changing a function pointer
 
 The second program, `heap-overflow2.cc` stores a function pointer on the heap.
 By overflowing a buffer, you can change this function pointer so that it points
