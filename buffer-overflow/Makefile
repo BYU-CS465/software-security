@@ -1,18 +1,18 @@
-CPP=		g++ $(CCFLAGS)
-STACK=		stack-overflow.cc
+CPP=		gcc $(CCFLAGS)
+STACK=		stack-overflow.c
 
 OBJS =		$(STACK)
 
 LIBS=		-fno-stack-protector -no-pie
 
-CCFLAGS= -g 
+CCFLAGS= -g
 
 
  
 all: stack
 
 stack:	$(STACK)
-		$(CXX) $(CCFLAGS) -fno-stack-protector -no-pie $^ -o $@
+		$(CPP) -fno-stack-protector -z execstack -no-pie $^ -o $@
 
 clean:
 		rm -f *.o
