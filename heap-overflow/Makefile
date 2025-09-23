@@ -1,6 +1,6 @@
-CPP=		g++ $(CCFLAGS)
-HEAP=		heap-overflow.cc
-HEAP2=		heap-overflow2.cc
+CPP=		gcc $(CCFLAGS)
+HEAP=		heap-overflow.c
+HEAP2=		heap-overflow2.c
 
 OBJS =		$(HEAP) $(HEAP2)
 
@@ -13,10 +13,10 @@ CCFLAGS= -g
 all: heap heap2
 
 heap:	$(HEAP)
-		$(CXX) $(CCFLAGS) -fno-stack-protector -no-pie $^ -o $@
+		$(CPP) -fno-stack-protector -no-pie $^ -o $@
 
 heap2:	$(HEAP2)
-		$(CXX) $(CCFLAGS) -fno-stack-protector -no-pie $^ -o $@
+		$(CPP) -fno-stack-protector -no-pie $^ -o $@
 
 clean:
 		rm -f *.o

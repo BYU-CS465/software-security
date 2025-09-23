@@ -1,5 +1,0 @@
-buffer overflow
-    removed -m32 flag from Makefile.project
-    created a python env
-    pip installed pwntools
-    had to use a 16bit offset

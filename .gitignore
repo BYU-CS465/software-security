@@ -1,4 +1,5 @@
 *.o
+.venv
 *.d
 rectangular
 waiting-list
